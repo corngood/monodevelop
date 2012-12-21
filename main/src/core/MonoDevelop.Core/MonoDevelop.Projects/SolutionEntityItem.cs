@@ -440,6 +440,11 @@ namespace MonoDevelop.Projects
 			return new SolutionItemConfiguration (name);
 		}
 		
+		public virtual SolutionItemConfiguration CreateConfiguration (string name, string platform)
+		{
+			return CreateConfiguration(name);
+		}
+
 		void OnConfigurationAddedToCollection (object ob, ConfigurationEventArgs args)
 		{
 			NotifyModified ("Configurations");

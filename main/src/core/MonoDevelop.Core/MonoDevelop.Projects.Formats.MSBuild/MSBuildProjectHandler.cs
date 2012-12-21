@@ -498,7 +498,7 @@ namespace MonoDevelop.Projects.Formats.MSBuild
 		void LoadConfiguration (MSBuildSerializer serializer, List<ConfigData> configData, string conf, string platform)
 		{
 			MSBuildPropertySet grp = GetMergedConfiguration (configData, conf, platform, null);
-			SolutionItemConfiguration config = EntityItem.CreateConfiguration (conf);
+			SolutionItemConfiguration config = EntityItem.CreateConfiguration (conf, platform);
 			
 			config.Platform = platform;
 			DataItem data = ReadPropertyGroupMetadata (serializer, grp, config);

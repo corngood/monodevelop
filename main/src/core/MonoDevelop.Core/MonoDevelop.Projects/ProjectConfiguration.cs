@@ -46,8 +46,11 @@ namespace MonoDevelop.Projects
 		{
 		}
 
+		[ProjectPathItemProperty("IntermediateOutputPath")]
+		private FilePath intermediateOutputDirectory = "." + Path.DirectorySeparatorChar;
 		public virtual FilePath IntermediateOutputDirectory {
-			get { return ParentItem.BaseDirectory.Combine ("obj", this.Name);; }
+			get { return intermediateOutputDirectory; }
+			set { intermediateOutputDirectory = value; }
 		}
 
 		[ProjectPathItemProperty("OutputPath")]
@@ -119,6 +122,7 @@ namespace MonoDevelop.Projects
 
 			ProjectConfiguration projectConf = conf as ProjectConfiguration;
 
+			intermediateOutputDirectory = projectConf.intermediateOutputDirectory;
 			outputDirectory = projectConf.outputDirectory;
 			debugMode = projectConf.debugMode;
 			pauseConsoleOutput = projectConf.pauseConsoleOutput;

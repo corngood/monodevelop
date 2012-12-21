@@ -734,14 +734,27 @@ namespace MonoDevelop.Projects
 
 		public override SolutionItemConfiguration CreateConfiguration (string name)
 		{
-			DotNetProjectConfiguration conf = new DotNetProjectConfiguration (name);
+			return CreateConfiguration(name, string.Empty);
+		}
+
+		string getOutputPath (string name, DotNetProjectConfiguration conf, string baseDirectory)
+		{
 			string dir;
 			if (conf.Platform.Length == 0)
-				dir = Path.Combine ("bin", conf.Name);
+				dir = Path.Combine (name, conf.Name);
 			else
-				dir = Path.Combine (Path.Combine ("bin", conf.Platform), conf.Name);
+				dir = Path.Combine (Path.Combine (name, conf.Platform), conf.Name);
+			
+			return String.IsNullOrEmpty (baseDirectory) ? dir : Path.Combine (baseDirectory, dir);
+		}
 
-			conf.OutputDirectory = String.IsNullOrEmpty (BaseDirectory) ? dir : Path.Combine (BaseDirectory, dir);
+		public override SolutionItemConfiguration CreateConfiguration (string name, string platform)
+		{
+			DotNetProjectConfiguration conf = new DotNetProjectConfiguration (name) { Platform = platform };
+ 
+			conf.IntermediateOutputDirectory = getOutputPath("obj", conf, BaseDirectory);
+			conf.OutputDirectory = getOutputPath("bin", conf, BaseDirectory);
+
 			conf.OutputAssembly = Name;
 			if (LanguageBinding != null) {
 				XmlElement xconf = null;
